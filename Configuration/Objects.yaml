@@ -1,0 +1,9 @@
+Nezaniel\SystemNodes\Service\SystemNodeService:
+  properties:
+    cache:
+      object:
+        factoryObjectName: TYPO3\Flow\Cache\CacheManager
+        factoryMethodName: getCache
+        arguments:
+          1:
+            value: Nezaniel_SystemNodes_Service_SystemNodeService_Cache
