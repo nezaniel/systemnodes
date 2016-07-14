@@ -101,26 +101,42 @@ class SystemNodeService
     /**
      * @param string $nodeTypeName
      * @param string $identifier
-     * @return NodeInterface|null|NodeInterface[]
+     * @return null|NodeInterface
      */
-    public function getSystemNodes($nodeTypeName, $identifier = null)
+    public function getSystemNode($nodeTypeName, $identifier = null)
     {
         $cacheEntryIdentifier = $this->resolveCacheEntryIdentifier($nodeTypeName, $identifier);
-        $systemNodes = Arrays::getValueByPath($this->systemNodes, $cacheEntryIdentifier);
-        if (is_null($systemNodes)) {
+        $systemNode = Arrays::getValueByPath($this->systemNodes, $cacheEntryIdentifier);
+        if (is_null($systemNode)) {
             $systemNodeIdentifier = Arrays::getValueByPath($this->systemNodeIdentifiers, $cacheEntryIdentifier);
             if (!is_null($systemNodeIdentifier)) {
-                if (is_array($systemNodeIdentifier)) {
-                    $systemNodes = [];
-                    foreach ($systemNodeIdentifier as $identifier) {
-                        $systemNodes[] = $this->contentContextContainer->getContentContext()->getNodeByIdentifier($identifier);
-                    }
-                } else {
-                    $systemNodes = $this->contentContextContainer->getContentContext()->getNodeByIdentifier($systemNodeIdentifier);
-                }
-                $this->systemNodes = Arrays::setValueByPath($this->systemNodes, $cacheEntryIdentifier, $systemNodes);
+                $systemNode = $this->contentContextContainer->getContentContext()->getNodeByIdentifier($systemNodeIdentifier);
+                $this->systemNodes = Arrays::setValueByPath($this->systemNodes, $cacheEntryIdentifier, $systemNode);
             }
         }
+
+        return $systemNode;
+    }
+
+    /**
+     * @param string $nodeTypeName
+     * @return NodeInterface[]
+     */
+    public function getSystemNodes($nodeTypeName)
+    {
+        $cacheEntryIdentifier = $this->resolveCacheEntryIdentifier($nodeTypeName, null);
+        $systemNodes = Arrays::getValueByPath($this->systemNodes, $cacheEntryIdentifier);
+        if (is_null($systemNodes)) {
+            $systemNodes = [];
+            $systemNodeIdentifiers = Arrays::getValueByPath($this->systemNodeIdentifiers, $cacheEntryIdentifier);
+            if (is_array($systemNodeIdentifiers)) {
+                foreach ($systemNodeIdentifiers as $identifier) {
+                    $systemNodes[] = $this->contentContextContainer->getContentContext()->getNodeByIdentifier($identifier);
+                }
+            }
+            $this->systemNodes = Arrays::setValueByPath($this->systemNodes, $cacheEntryIdentifier, $systemNodes);
+        }
+
         return $systemNodes;
     }
 
@@ -153,11 +169,13 @@ class SystemNodeService
      * @param string $identifier
      * @return string
      */
-    protected function resolveCacheEntryIdentifier($nodeTypeName, $identifier = null) {
+    protected function resolveCacheEntryIdentifier($nodeTypeName, $identifier = null)
+    {
         $cacheIdentifier = $this->formatCacheEntryIdentifier($nodeTypeName);
         if (!is_null($identifier)) {
             $cacheIdentifier .= '.' . $this->formatCacheEntryIdentifier($identifier);
         }
+
         return $cacheIdentifier;
     }
 
