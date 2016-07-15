@@ -81,9 +81,14 @@ class SystemNodeService
         foreach ($flowQuery->find('[instanceof Nezaniel.SystemNodes:SystemNode]')->get() as $systemNode) {
             /** @var NodeInterface $systemNode */
             $nodeTypeName = $systemNode->getNodeType()->getName();
-            $identifier = $systemNode->getNodeType()->getConfiguration('systemNode.identifier');
-            if ($identifier) {
-                $identifier = $systemNode->getProperty($identifier);
+            $identifierPropertyName = $systemNode->getNodeType()->getConfiguration('systemNode.identifier');
+            if ($identifierPropertyName) {
+                $identifier = $systemNode->getProperty($identifierPropertyName);
+                if (!$identifier) {
+                    continue;
+                }
+            } else {
+                $identifier = null;
             }
             $ancestorNodeTypeName = $systemNode->getNodeType()->getConfiguration('systemNode.ancestorToBeResolved');
             if ($ancestorNodeTypeName) {
@@ -130,8 +135,8 @@ class SystemNodeService
             $systemNodes = [];
             $systemNodeIdentifiers = Arrays::getValueByPath($this->systemNodeIdentifiers, $cacheEntryIdentifier);
             if (is_array($systemNodeIdentifiers)) {
-                foreach ($systemNodeIdentifiers as $identifier) {
-                    $systemNodes[] = $this->contentContextContainer->getContentContext()->getNodeByIdentifier($identifier);
+                foreach ($systemNodeIdentifiers as $systemNodeIdentifier => $nodeIdentifier) {
+                    $systemNodes[$systemNodeIdentifier] = $this->contentContextContainer->getContentContext()->getNodeByIdentifier($nodeIdentifier);
                 }
             }
             $this->systemNodes = Arrays::setValueByPath($this->systemNodes, $cacheEntryIdentifier, $systemNodes);
