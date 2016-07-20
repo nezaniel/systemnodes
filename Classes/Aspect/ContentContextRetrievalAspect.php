@@ -24,7 +24,7 @@ class ContentContextRetrievalAspect
 
 
     /**
-     * @Flow\AfterReturning("method(TYPO3\TYPO3CR\Domain\Service\Context->__construct())")
+     * @Flow\AfterReturning("method(TYPO3\Neos\Domain\Service\ContentContext->__construct())")
      * @param \TYPO3\Flow\Aop\JoinPointInterface $joinPoint The current join point
      * @return void
      */

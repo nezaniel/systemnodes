@@ -1,9 +1,9 @@
 {
     "name": "nezaniel/systemnodes",
     "type": "typo3-flow-package",
-    "description": "The system node package for the Neos Content Repository",
+    "description": "The system node package for Neos CMS",
     "require": {
-        "typo3/typo3cr": "~2.2"
+        "typo3/neos": "~2.2"
     },
     "autoload": {
         "psr-4": {

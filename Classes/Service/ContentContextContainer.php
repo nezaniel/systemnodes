@@ -6,7 +6,8 @@ namespace Nezaniel\SystemNodes\Service;
  *                                                                       */
 
 use TYPO3\Flow\Annotations as Flow;
-use TYPO3\TYPO3CR\Domain\Service\Context as ContentContext;
+use TYPO3\Neos\Domain\Repository\DomainRepository;
+use TYPO3\Neos\Domain\Service\ContentContext;
 
 /**
  * @Flow\Scope("singleton")
@@ -18,6 +19,12 @@ class ContentContextContainer
      * @var ContentContext
      */
     protected $contentContext;
+
+    /**
+     * @Flow\Inject
+     * @var DomainRepository
+     */
+    protected $domainRepository;
 
 
     /**
@@ -46,6 +53,8 @@ class ContentContextContainer
      */
     protected function createContentContext()
     {
+        $domain = $this->domainRepository->findOneByActiveRequest();
+
         $this->contentContext = new ContentContext(
             'live',
             new \DateTime(),
@@ -53,7 +62,9 @@ class ContentContextContainer
             [],
             false,
             false,
-            false
+            false,
+            $domain ? $domain->getSite() : null,
+            $domain
         );
     }
 }
