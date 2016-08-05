@@ -8,6 +8,7 @@ use TYPO3\Eel\FlowQuery\FlowQuery;
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\Flow\Cache\Frontend\VariableFrontend;
 use TYPO3\Flow\Utility\Arrays;
+use TYPO3\Neos\Domain\Service\ContentContextFactory;
 use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
 
 /**
@@ -22,6 +23,12 @@ class SystemNodeService
      * @var ContentContextContainer
      */
     protected $contentContextContainer;
+
+    /**
+     * @Flow\Inject
+     * @var ContentContextFactory
+     */
+    protected $contentContextFactory;
 
     /**
      * @Flow\InjectConfiguration(path="contentContext.rootNodePath")
@@ -74,7 +81,13 @@ class SystemNodeService
      */
     protected function initializeSystemNodes()
     {
-        $contentContext = $this->contentContextContainer->getContentContext();
+        $currentContentContext = $this->contentContextContainer->getContentContext();
+        $contentContext = $this->contentContextFactory->create([
+            'currentSite' => $currentContentContext->getCurrentSite(),
+            'currentDomain' => $currentContentContext->getCurrentDomain(),
+            'invisibleContentShown' => true,
+            'inaccessibleContentShown' => true
+        ]);
         $flowQuery = new FlowQuery([$contentContext->getNode($this->rootNodePath)]);
 
         $systemNodeIdentifiers = [];
