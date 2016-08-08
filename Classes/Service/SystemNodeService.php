@@ -64,9 +64,9 @@ class SystemNodeService
     public function initializeObject()
     {
         if (!$this->cache->get('systemNodeIdentifiers')) {
-            $this->systemNodeIdentifiers = $this->cache->get('systemNodeIdentifiers');
-        } else {
             $this->initializeSystemNodes();
+        } else {
+            $this->systemNodeIdentifiers = $this->cache->get('systemNodeIdentifiers');
         }
     }
 
