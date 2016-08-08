@@ -1,2 +1,19 @@
 'Nezaniel.SystemNodes:SystemNode':
   abstract: true
+
+# Example node type with two paths of nested identifiers:
+#
+#'Vendor.Project:NodeType':
+#  superTypes:
+#    'Nezaniel.SystemNodes:SystemNode': true
+#  systemNode:
+#    paths:
+#      identifier:
+#        property1: true # The first identifying property
+#        property2: true # A second identifying property
+#      uriPathSegment:
+#        uriPathSegment: true
+#    ancestorToBeResolved: 'TYPO3.Neos:Document' # Optional: the ancestor node to be resolved
+#
+# Using SystemNodeService::getSystemNode(['Vendor.Project:NodeType', 'identifier', 'foo', 'bar'])
+# will return the TYPO3.Neos:Document closest to the Vendor.Project:NodeType with property1 = 'foo' and property2 = 'bar'

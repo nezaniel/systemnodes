@@ -23,22 +23,21 @@ class SystemNodeHelper implements ProtectedContextAwareInterface
 
 
     /**
-     * @param string $nodeTypeName
+     * @param array $identifier
      * @return NodeInterface[]
      */
-    public function getSystemNodes($nodeTypeName)
+    public function getSystemNodes(array $identifier)
     {
-        return $this->systemNodeService->getSystemNodes($nodeTypeName);
+        return $this->systemNodeService->getSystemNodes($identifier);
     }
 
     /**
-     * @param $nodeTypeName
-     * @param string $identifier
+     * @param array $identifier
      * @return null|NodeInterface
      */
-    public function getSystemNode($nodeTypeName, $identifier = null)
+    public function getSystemNode(array $identifier)
     {
-        return $this->systemNodeService->getSystemNode($nodeTypeName, $identifier);
+        return $this->systemNodeService->getSystemNode($identifier);
     }
 
 
