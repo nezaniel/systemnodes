@@ -194,7 +194,24 @@ class SystemNodeService
     public function refreshCacheIfNecessary(NodeInterface $node)
     {
         if ($node->getNodeType()->isOfType('Nezaniel.SystemNodes:SystemNode')) {
-            $this->initializeSystemNodes();
+            $currentPath = [];
+
+            $recursiveIterator = function(array $items) use(&$recursiveIterator, &$currentPath, $node) {
+                foreach ($items as $key => $entry) {
+                    $currentPath[] = $key;
+                    if (is_array($entry)) {
+                        $recursiveIterator($entry);
+                    } elseif ($entry === $node->getIdentifier()) {
+                        $this->systemNodeIdentifiers = Arrays::unsetValueByPath($this->systemNodeIdentifiers, $currentPath);
+                    }
+                    array_pop($currentPath);
+                }
+            };
+
+            $recursiveIterator($this->systemNodeIdentifiers);
+
+            $this->initializeSystemNode($node);
+            $this->cache->set('systemNodeIdentifiers', $this->systemNodeIdentifiers);
         }
     }
 
