@@ -114,7 +114,10 @@ class SystemNodeService
      */
     protected function resolveIdentifierValues(NodeInterface $systemNode, $identifierPathName, $identifierPath)
     {
-        $identifierValues = [$systemNode->getNodeType()->getName(), $identifierPathName];
+        $identifierValues = [
+            $this->formatCacheEntryIdentifier($systemNode->getNodeType()->getConfiguration('systemNode.nodeTypeIdentifier') ?: $systemNode->getNodeType()->getName()),
+            $this->formatCacheEntryIdentifier($identifierPathName)
+        ];
         foreach ($identifierPath as $propertyName => $active) {
             $identifierValue = $active ? $this->formatCacheEntryIdentifier($systemNode->getProperty($propertyName)) : null;
             if (!$identifierValue) {
