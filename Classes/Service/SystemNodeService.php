@@ -151,17 +151,27 @@ class SystemNodeService
      */
     public function getSystemNode(array $identifier, $force = false)
     {
-        array_walk($identifier, function (&$cacheEntryIdentifier) {
-            $cacheEntryIdentifier = $this->formatCacheEntryIdentifier($cacheEntryIdentifier);
-        });
-
-        $systemNodeIdentifier = Arrays::getValueByPath($this->systemNodeIdentifiers, $identifier);
+        $systemNodeIdentifier = $this->getSystemNodeIdentifier($identifier);
         if (!is_null($systemNodeIdentifier)) {
             $context = $this->getContentContext($force);
+
             return $context->getNodeByIdentifier($systemNodeIdentifier);
         } else {
             return null;
         }
+    }
+
+    /**
+     * @param array $identifier
+     * @return string|null
+     */
+    public function getSystemNodeIdentifier(array $identifier)
+    {
+        array_walk($identifier, function (&$cacheEntryIdentifier) {
+            $cacheEntryIdentifier = $this->formatCacheEntryIdentifier($cacheEntryIdentifier);
+        });
+
+        return Arrays::getValueByPath($this->systemNodeIdentifiers, $identifier);
     }
 
     /**
