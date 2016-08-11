@@ -13,7 +13,8 @@
 #        property2: true # A second identifying property
 #      uriPathSegment:
 #        uriPathSegment: true
+#    nodeTypeIdentifier: 'Vendor.Project:OtherNodeType' # Optional: The node type name to be used as identifier, will fall back to the node type's own name
 #    ancestorToBeResolved: 'TYPO3.Neos:Document' # Optional: the ancestor node to be resolved
 #
-# Using SystemNodeService::getSystemNode(['Vendor.Project:NodeType', 'identifier', 'foo', 'bar'])
+# Using SystemNodeService::getSystemNode(['Vendor.Project:OtherNodeType', 'identifier', 'foo', 'bar'])
 # will return the TYPO3.Neos:Document closest to the Vendor.Project:NodeType with property1 = 'foo' and property2 = 'bar'
