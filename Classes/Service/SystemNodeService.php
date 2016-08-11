@@ -90,7 +90,8 @@ class SystemNodeService
     /**
      * @param NodeInterface $systemNode
      */
-    protected function initializeSystemNode(NodeInterface $systemNode) {
+    protected function initializeSystemNode(NodeInterface $systemNode)
+    {
         $identifierPaths = $systemNode->getNodeType()->getConfiguration('systemNode.paths');
         if (!empty($identifierPaths)) {
             foreach ($identifierPaths as $identifierPathName => $identifierPath) {
@@ -209,7 +210,7 @@ class SystemNodeService
         if ($node->getNodeType()->isOfType('Nezaniel.SystemNodes:SystemNode')) {
             $currentPath = [];
 
-            $recursiveIterator = function(array $items) use(&$recursiveIterator, &$currentPath, $node) {
+            $recursiveIterator = function (array $items) use (&$recursiveIterator, &$currentPath, $node) {
                 foreach ($items as $key => $entry) {
                     $currentPath[] = $key;
                     if (is_array($entry)) {
