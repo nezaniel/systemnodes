@@ -103,7 +103,7 @@ class SystemNodeService
                 $this->cacheSystemNode($systemNode, $identifierValues);
             }
         } else {
-            $this->cacheSystemNode($systemNode, [$systemNode->getNodeType()->getName()]);
+            $this->cacheSystemNode($systemNode, [$this->formatCacheEntryIdentifier($systemNode->getNodeType()->getName())]);
         }
     }
 
