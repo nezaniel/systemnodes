@@ -32,5 +32,4 @@ class ContentContextRetrievalAspect
     {
         $this->contentContextContainer->initializeContentContext($joinPoint->getProxy());
     }
-
 }

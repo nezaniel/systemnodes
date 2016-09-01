@@ -7,6 +7,7 @@ namespace Nezaniel\SystemNodes\Service;
 
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\Neos\Domain\Repository\DomainRepository;
+use TYPO3\Neos\Domain\Repository\SiteRepository;
 use TYPO3\Neos\Domain\Service\ContentContext;
 
 /**
@@ -26,6 +27,12 @@ class ContentContextContainer
      */
     protected $domainRepository;
 
+    /**
+     * @Flow\Inject
+     * @var SiteRepository
+     */
+    protected $siteRepository;
+
 
     /**
      * @param ContentContext $contentContext
@@ -33,7 +40,9 @@ class ContentContextContainer
      */
     public function initializeContentContext(ContentContext $contentContext)
     {
-        $this->contentContext = $contentContext;
+        if ($contentContext->getCurrentSite()) {
+            $this->contentContext = $contentContext;
+        }
     }
 
     /**
@@ -63,7 +72,7 @@ class ContentContextContainer
             false,
             false,
             false,
-            $domain ? $domain->getSite() : null,
+            $domain ? $domain->getSite() : $this->siteRepository->findFirstOnline(),
             $domain
         );
     }
