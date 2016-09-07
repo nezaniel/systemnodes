@@ -33,6 +33,11 @@ class ContentContextContainer
      */
     protected $siteRepository;
 
+    /**
+     * @var bool
+     */
+    protected $initialized = false;
+
 
     /**
      * @param ContentContext $contentContext
@@ -43,6 +48,14 @@ class ContentContextContainer
         if ($contentContext->getCurrentSite()) {
             $this->contentContext = $contentContext;
         }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isInitialized()
+    {
+        return $this->initialized;
     }
 
     /**
