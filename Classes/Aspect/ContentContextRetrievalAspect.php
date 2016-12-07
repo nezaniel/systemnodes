@@ -30,7 +30,7 @@ class ContentContextRetrievalAspect
      */
     public function retrieveContentContext(JoinPointInterface $joinPoint)
     {
-        if ($this->contentContextContainer->isInitialized()) {
+        if (!$this->contentContextContainer->isInitialized()) {
             $this->contentContextContainer->initializeContentContext($joinPoint->getProxy());
         }
     }
